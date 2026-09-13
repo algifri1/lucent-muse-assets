@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "channel": "naro-core",
-  "release_id": "linked-baseline-1",
-  "generation": 1,
-  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/linked-baseline-1.bin",
-  "bundle_sha256": "acc7e5559cb795ea16224f2a2561e64e276ce81051fdeb836e3196fec35a3ed8",
-  "bundle_size": 804,
-  "published_at": "2026-09-13T12:37:50Z",
-  "notes": "Initial encrypted NARO linked-client channel validation."
+  "release_id": "linked-g2",
+  "generation": 2,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/linked-g2.bin",
+  "bundle_sha256": "c66ec779560f31af801f66e70e921e1aaa33abb4f72d4a904f991b2b288f1309",
+  "bundle_size": 1252,
+  "published_at": "2026-09-13T17:54:27Z",
+  "notes": "G2 live linked-client validation patch."
 }
