@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "channel": "naro-core",
-  "release_id": "linked-g3",
-  "generation": 3,
-  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/linked-g3-f20da88fb17bfa6d.bin",
-  "bundle_sha256": "f20da88fb17bfa6dd87e6c7cc7004574e71ea7072d259706271716a5c4f32cdf",
-  "bundle_size": 8268,
-  "published_at": "2026-09-13T18:35:00Z",
-  "notes": "G3 immutable cache-safe linked-client patch."
+  "release_id": "ui-shell-v1-g4",
+  "generation": 4,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/ui-shell-v1-g4-143401c156b40ba8.bin",
+  "bundle_sha256": "143401c156b40ba838bb151fee4bbfbee2a9235ae829043c5a082115f9815fa9",
+  "bundle_size": 12664,
+  "published_at": "2026-09-13T18:47:00Z",
+  "notes": "NARO Responsive UI Shell V1."
 }
