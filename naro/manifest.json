@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "channel": "naro-core",
-  "release_id": "web-shell-preview-v1-g5",
-  "generation": 5,
-  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/web-shell-preview-v1-g5-ff65bc8cde5acb90.bin",
-  "bundle_sha256": "ff65bc8cde5acb906d2c95cf8bb3389be6ca8f95760e2f327f666dc643763d1c",
-  "bundle_size": 34488,
-  "published_at": "2026-09-13T18:58:00Z",
-  "notes": "NARO Desktop Web Shell V1 preview plus Responsive QML safety shell."
+  "release_id": "premium-web-design-v2-g6",
+  "generation": 6,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/premium-web-design-v2-g6-a956ddc2c9a7c4fd.bin",
+  "bundle_sha256": "a956ddc2c9a7c4fd7fc3fa2d6756504e79751ac0077b6a0d14e34bac9b082b7c",
+  "bundle_size": 29304,
+  "published_at": "2026-09-13T19:24:00Z",
+  "notes": "Premium NARO Web Design V2 + default Web Shell launcher with QML fallback."
 }
