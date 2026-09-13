@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "channel": "naro-core",
-  "release_id": "linked-g2",
-  "generation": 2,
-  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/linked-g2.bin",
-  "bundle_sha256": "f7dec80e47dba6feaee1a9e7669bf5819da6bbe205671d94741876531a06b51e",
-  "bundle_size": 1252,
-  "published_at": "2026-09-13T18:30:00Z",
-  "notes": "Exact staged G2 client validation patch."
+  "release_id": "linked-g3",
+  "generation": 3,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/linked-g3-f20da88fb17bfa6d.bin",
+  "bundle_sha256": "f20da88fb17bfa6dd87e6c7cc7004574e71ea7072d259706271716a5c4f32cdf",
+  "bundle_size": 8268,
+  "published_at": "2026-09-13T18:35:00Z",
+  "notes": "G3 immutable cache-safe linked-client patch."
 }
