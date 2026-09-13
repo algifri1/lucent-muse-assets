@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "channel": "naro-core",
-  "release_id": "premium-web-design-v2-g6",
-  "generation": 6,
-  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/premium-web-design-v2-g6-a956ddc2c9a7c4fd.bin",
-  "bundle_sha256": "a956ddc2c9a7c4fd7fc3fa2d6756504e79751ac0077b6a0d14e34bac9b082b7c",
-  "bundle_size": 29304,
-  "published_at": "2026-09-13T19:24:00Z",
-  "notes": "Premium NARO Web Design V2 + default Web Shell launcher with QML fallback."
+  "release_id": "approved-ui-v1-g7",
+  "generation": 7,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/approved-ui-v1-g7-7d5a850600009ef1.bin",
+  "bundle_sha256": "7d5a850600009ef165a59fe9440236011a9d02cf21793e4cec4001c0f0d072b9",
+  "bundle_size": 16312,
+  "published_at": "2026-09-13T20:42:30Z",
+  "notes": "Approved NARO UI Direction V1 dashboard shell."
 }
