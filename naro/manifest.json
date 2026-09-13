@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "channel": "naro-core",
-  "release_id": "ui-shell-v1-g4",
-  "generation": 4,
-  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/ui-shell-v1-g4-143401c156b40ba8.bin",
-  "bundle_sha256": "143401c156b40ba838bb151fee4bbfbee2a9235ae829043c5a082115f9815fa9",
-  "bundle_size": 12664,
-  "published_at": "2026-09-13T18:47:00Z",
-  "notes": "NARO Responsive UI Shell V1."
+  "release_id": "web-shell-preview-v1-g5",
+  "generation": 5,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/web-shell-preview-v1-g5-ff65bc8cde5acb90.bin",
+  "bundle_sha256": "ff65bc8cde5acb906d2c95cf8bb3389be6ca8f95760e2f327f666dc643763d1c",
+  "bundle_size": 34488,
+  "published_at": "2026-09-13T18:58:00Z",
+  "notes": "NARO Desktop Web Shell V1 preview plus Responsive QML safety shell."
 }
