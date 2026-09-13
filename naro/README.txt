@@ -1,0 +1,1 @@
+NARO encrypted update delivery branch. Runtime payloads are encrypted and authenticated; source remains private.\n

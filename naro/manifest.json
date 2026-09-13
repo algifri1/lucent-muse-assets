@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "channel": "naro-core",
+  "release_id": "linked-baseline-1",
+  "generation": 1,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/linked-baseline-1.bin",
+  "bundle_sha256": "acc7e5559cb795ea16224f2a2561e64e276ce81051fdeb836e3196fec35a3ed8",
+  "bundle_size": 804,
+  "published_at": "2026-09-13T12:37:50Z",
+  "notes": "Initial encrypted NARO linked-client channel validation."
+}
