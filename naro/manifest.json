@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "channel": "naro-core",
-  "release_id": "approved-ui-v1-g7",
-  "generation": 7,
-  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/approved-ui-v1-g7-7d5a850600009ef1.bin",
-  "bundle_sha256": "7d5a850600009ef165a59fe9440236011a9d02cf21793e4cec4001c0f0d072b9",
-  "bundle_size": 16312,
-  "published_at": "2026-09-13T20:42:30Z",
-  "notes": "Approved NARO UI Direction V1 dashboard shell."
+  "release_id": "approved-ui-v1-g8-right-shell",
+  "generation": 8,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/approved-ui-v1-g8-right-shell-c360976431a8d849.bin",
+  "bundle_sha256": "c360976431a8d849038940010bb14a007ddaf3887c49d5025c25bc82b2276e95",
+  "bundle_size": 6860,
+  "published_at": "2026-09-14T05:22:55Z",
+  "notes": "Runtime right-sidebar hotfix plus updater-safe Web Shell launcher."
 }
