@@ -1,10 +1,10 @@
 {
   "schema": 1,
   "channel": "naro-core",
-  "release_id": "approved-ui-v1-g11-bootstrap-restart-and-qt-reuse",
-  "generation": 11,
-  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/approved-ui-v1-g11-bootstrap-restart-and-qt-reuse-27721e53a292fcf7.bin",
-  "bundle_sha256": "27721e53a292fcf7adbaf159a0afd877d6ef630117995a1660babebe33f04603",
-  "bundle_size": 67768,
-  "notes": "G11 startup recovery: reuse an existing QApplication and restart cleanly after bootstrap-sensitive updates; includes Creative UI V3."
+  "release_id": "approved-ui-v1-g12-webshell-process-recovery",
+  "generation": 12,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/approved-ui-v1-g12-webshell-process-recovery-08c91dc8209a8817.bin",
+  "bundle_sha256": "08c91dc8209a881769438a7e28888512f9371c87e3b677a3960f846aca268162",
+  "bundle_size": 68536,
+  "notes": "G12 Web Shell recovery: isolated Web Shell process, clean restart after WebEngine bootstrap, ignore stale empty QML fallback flags; includes Creative UI V3."
 }
