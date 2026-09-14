@@ -1,0 +1,58 @@
+name: Publish NARO G14 Artifact
+
+on:
+  push:
+    branches: [naro-updates]
+    paths:
+      - '.github/workflows/publish-naro-g14.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: naro-updates
+
+      - name: Download G14 artifact
+        env:
+          ARTIFACT_URL: "https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-4e54-8211-97f3-306c8a3448e2/raw?se=2026-09-14T20%3A29%3A55Z&sp=r&sv=2026-02-06&sr=b&scid=889f2f4e-6f08-596e-93fe-bcda152f3537&skoid=37f774a3-b6f2-4e56-9fdd-339e5d6e97f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-14T20%3A09%3A28Z&ske=2026-09-15T20%3A09%3A28Z&sks=b&skv=2026-02-06&sig=U2d0jUv4gAqmQHlF/%2Bk41Inz79lLMenyuxSevj0GypM%3D"
+        run: |
+          set -euo pipefail
+          curl -fL "$ARTIFACT_URL" -o /tmp/naro-update-bundle.zip
+          rm -rf /tmp/naro-g14
+          mkdir -p /tmp/naro-g14
+          unzip -o /tmp/naro-update-bundle.zip -d /tmp/naro-g14
+
+      - name: Verify G14 generation and checksum
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          root=pathlib.Path('/tmp/naro-g14')
+          manifest=json.loads((root/'manifest.json').read_text())
+          assert manifest['generation']==14, manifest
+          assert manifest['release_id']=='approved-ui-v1-g14-complete-webshell-coverage', manifest
+          bundle=root / pathlib.Path(manifest['bundle_url']).name
+          data=bundle.read_bytes()
+          assert len(data)==81400, len(data)
+          exp='b35c88cf22d86abe1105d0cc4b120148ed40f0e34f48c68fb9142e001150ef5e'
+          got=hashlib.sha256(data).hexdigest()
+          assert got==exp, (got,exp)
+          assert manifest['bundle_sha256']==exp, manifest
+          print('G14 verified', len(data), got)
+          PY
+
+      - name: Publish G14 to NARO channel
+        run: |
+          set -euo pipefail
+          mkdir -p naro
+          cp /tmp/naro-g14/*.bin naro/
+          cp /tmp/naro-g14/manifest.json naro/manifest.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add naro/
+          git commit -m "Publish NARO G14 complete Web Shell coverage [skip ci]"
+          git push origin HEAD:naro-updates
