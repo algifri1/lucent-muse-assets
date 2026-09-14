@@ -1,0 +1,58 @@
+name: Publish NARO G9 Artifact
+
+on:
+  push:
+    branches: [naro-updates]
+    paths:
+      - '.github/workflows/publish-naro-g9.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: naro-updates
+
+      - name: Download built artifact
+        env:
+          ARTIFACT_URL: "https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-181c-8211-af50-2e0dadfc96b0/raw?se=2026-09-14T06%3A41%3A18Z&sp=r&sv=2026-02-06&sr=b&scid=1d6d2094-796a-5883-b019-43250ca61e5d&skoid=54865dd2-31dc-44cc-a877-635aa4250446&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-14T05%3A38%3A11Z&ske=2026-09-15T05%3A38%3A11Z&sks=b&skv=2026-02-06&sig=ffr%2BYgCLN2CtVCq5eypfuooYK0JKAM8thNZ0HHs2/gI%3D"
+        run: |
+          set -euo pipefail
+          curl -fL "$ARTIFACT_URL" -o /tmp/naro-update-bundle.zip
+          rm -rf /tmp/naro-g9
+          mkdir -p /tmp/naro-g9
+          unzip -o /tmp/naro-update-bundle.zip -d /tmp/naro-g9
+
+      - name: Verify generation and checksum
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          root=pathlib.Path('/tmp/naro-g9')
+          manifest=json.loads((root/'manifest.json').read_text())
+          assert manifest['generation']==9, manifest
+          bundle=root / pathlib.Path(manifest['bundle_url']).name
+          data=bundle.read_bytes()
+          assert len(data)==manifest['bundle_size']
+          assert hashlib.sha256(data).hexdigest()==manifest['bundle_sha256']
+          print(manifest['release_id'], manifest['bundle_sha256'])
+          PY
+
+      - name: Publish to NARO channel
+        run: |
+          set -euo pipefail
+          mkdir -p naro
+          cp /tmp/naro-g9/*.bin naro/
+          cp /tmp/naro-g9/manifest.json naro/manifest.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add naro/
+          if git diff --cached --quiet; then
+            echo "No update changes."
+            exit 0
+          fi
+          git commit -m "Publish NARO Creative UI V3 G9 [skip ci]"
+          git push origin HEAD:naro-updates
