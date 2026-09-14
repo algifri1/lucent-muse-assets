@@ -1,10 +1,10 @@
 {
   "schema": 1,
   "channel": "naro-core",
-  "release_id": "approved-ui-v1-g9-creative-command-center",
-  "generation": 9,
-  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/approved-ui-v1-g9-creative-command-center-fb5a4368b9b0883e.bin",
-  "bundle_sha256": "fb5a4368b9b0883ea27d493c1d6caf72595316b32b855341a980fde3a7e5169d",
-  "bundle_size": 51364,
-  "notes": "Full creative NARO UI V3: light command bar, modern executive hero, quick actions, shared workspace styling and structural right sidebar."
+  "release_id": "approved-ui-v1-g10-qt-lifecycle-hotfix",
+  "generation": 10,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/approved-ui-v1-g10-qt-lifecycle-hotfix-162d66811274d20d.bin",
+  "bundle_sha256": "162d66811274d20d418c2d07daa7f49023a5f731315b6e2b00869b2414e223c2",
+  "bundle_size": 53988,
+  "notes": "G10 Qt lifecycle hotfix: isolate QML fallback in a separate process; includes Creative UI V3 G9."
 }
