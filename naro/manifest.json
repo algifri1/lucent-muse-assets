@@ -1,10 +1,10 @@
 {
   "schema": 1,
   "channel": "naro-core",
-  "release_id": "approved-ui-v1-g12-webshell-process-recovery",
-  "generation": 12,
-  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/approved-ui-v1-g12-webshell-process-recovery-08c91dc8209a8817.bin",
-  "bundle_sha256": "08c91dc8209a881769438a7e28888512f9371c87e3b677a3960f846aca268162",
-  "bundle_size": 68536,
-  "notes": "G12 Web Shell recovery: isolated Web Shell process, clean restart after WebEngine bootstrap, ignore stale empty QML fallback flags; includes Creative UI V3."
+  "release_id": "approved-ui-v1-g14-complete-webshell-coverage",
+  "generation": 14,
+  "bundle_url": "https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/approved-ui-v1-g14-complete-webshell-coverage-b35c88cf22d86abe.bin",
+  "bundle_sha256": "b35c88cf22d86abe1105d0cc4b120148ed40f0e34f48c68fb9142e001150ef5e",
+  "bundle_size": 81400,
+  "notes": "G14 complete Web Shell coverage: all 20 NARO top-level workspaces are exposed through the approved Dark Shell + Light Workspace UI, navigation respects backend permissions, five marketplace integrations are verified, ZATCA/Hub/system workspaces are visible, and NARO Assistant suggested Arabic intents are validated read-only. Real Windows candidate, transactional deployment, cold-start launcher, and full runtime smoke all passed on NARO-WINDOWS-01."
 }
