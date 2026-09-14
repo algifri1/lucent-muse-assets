@@ -1,0 +1,58 @@
+name: Publish NARO G12 Artifact
+
+on:
+  push:
+    branches: [naro-updates]
+    paths:
+      - '.github/workflows/publish-naro-g12.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: naro-updates
+
+      - name: Download G12 artifact
+        env:
+          ARTIFACT_URL: "https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-9f60-8211-b685-dd13bb8fdfed/raw?se=2026-09-14T16%3A10%3A13Z&sp=r&sv=2026-02-06&sr=b&scid=2548a50a-4d3c-52f3-ba92-07cc0655ec50&skoid=54865dd2-31dc-44cc-a877-635aa4250446&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-14T02%3A29%3A09Z&ske=2026-09-15T02%3A29%3A09Z&sks=b&skv=2026-02-06&sig=pBVwwZSy9Sho4FhD2AhUQOQN/METEwg18h4w1b8nfsQ%3D"
+        run: |
+          set -euo pipefail
+          curl -fL "$ARTIFACT_URL" -o /tmp/naro-update-bundle.zip
+          rm -rf /tmp/naro-g12
+          mkdir -p /tmp/naro-g12
+          unzip -o /tmp/naro-update-bundle.zip -d /tmp/naro-g12
+
+      - name: Verify G12 generation and checksum
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          root=pathlib.Path('/tmp/naro-g12')
+          manifest=json.loads((root/'manifest.json').read_text())
+          assert manifest['generation']==12, manifest
+          assert manifest['release_id']=='approved-ui-v1-g12-webshell-process-recovery', manifest
+          bundle=root / pathlib.Path(manifest['bundle_url']).name
+          data=bundle.read_bytes()
+          assert len(data)==68536, len(data)
+          exp='08c91dc8209a881769438a7e28888512f9371c87e3b677a3960f846aca268162'
+          got=hashlib.sha256(data).hexdigest()
+          assert got==exp, (got,exp)
+          assert manifest['bundle_sha256']==exp, manifest
+          print('G12 verified', len(data), got)
+          PY
+
+      - name: Publish G12 to NARO channel
+        run: |
+          set -euo pipefail
+          mkdir -p naro
+          cp /tmp/naro-g12/*.bin naro/
+          cp /tmp/naro-g12/manifest.json naro/manifest.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add naro/
+          git commit -m "Publish NARO G12 Web Shell recovery [skip ci]"
+          git push origin HEAD:naro-updates
