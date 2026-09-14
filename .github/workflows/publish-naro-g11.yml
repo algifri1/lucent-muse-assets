@@ -1,0 +1,59 @@
+name: Publish NARO G11 Artifact
+
+on:
+  push:
+    branches: [naro-updates]
+    paths:
+      - '.github/workflows/publish-naro-g11.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: naro-updates
+
+      - name: Download G11 artifact
+        env:
+          ARTIFACT_URL: "https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-5d8c-8211-930a-caf72cdde793/raw?se=2026-09-14T15%3A39%3A56Z&sp=r&sv=2026-02-06&sr=b&scid=b499b34a-6d5b-58ee-a888-2ca1ccd41293&skoid=54865dd2-31dc-44cc-a877-635aa4250446&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-14T00%3A51%3A01Z&ske=2026-09-15T00%3A51%3A01Z&sks=b&skv=2026-02-06&sig=ugr6aif2Hoen9o4PkKfqNOLm82uONxW5qM3KYwEAe/U%3D"
+        run: |
+          set -euo pipefail
+          curl -fL "$ARTIFACT_URL" -o /tmp/naro-update-bundle.zip
+          rm -rf /tmp/naro-g11
+          mkdir -p /tmp/naro-g11
+          unzip -o /tmp/naro-update-bundle.zip -d /tmp/naro-g11
+
+      - name: Verify G11 generation and checksum
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          root=pathlib.Path('/tmp/naro-g11')
+          manifest=json.loads((root/'manifest.json').read_text())
+          assert manifest['generation']==11, manifest
+          assert manifest['release_id']=='approved-ui-v1-g11-bootstrap-restart-and-qt-reuse', manifest
+          bundle=root / pathlib.Path(manifest['bundle_url']).name
+          data=bundle.read_bytes()
+          assert len(data)==67768, len(data)
+          assert manifest['bundle_size']==67768, manifest
+          got=hashlib.sha256(data).hexdigest()
+          exp='27721e53a292fcf7adbaf159a0afd877d6ef630117995a1660babebe33f04603'
+          assert got==exp, (got,exp)
+          assert manifest['bundle_sha256']==exp, manifest
+          print('G11 verified', len(data), got)
+          PY
+
+      - name: Publish G11 to NARO channel
+        run: |
+          set -euo pipefail
+          mkdir -p naro
+          cp /tmp/naro-g11/*.bin naro/
+          cp /tmp/naro-g11/manifest.json naro/manifest.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add naro/
+          git commit -m "Publish NARO G11 startup recovery [skip ci]"
+          git push origin HEAD:naro-updates
