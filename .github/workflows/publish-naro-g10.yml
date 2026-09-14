@@ -1,0 +1,64 @@
+name: Publish NARO G10 Bundle
+
+on:
+  push:
+    branches: [naro-updates]
+    paths:
+      - '.github/workflows/publish-naro-g10.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: naro-updates
+
+      - name: Assemble and verify G10
+        run: |
+          set -euo pipefail
+          OUT="naro/approved-ui-v1-g10-qt-lifecycle-hotfix-162d66811274d20d.bin"
+          cat naro/g10.part1 naro/g10.part2 naro/g10.part3 naro/g10.part4 > "$OUT"
+          python3 - <<'PY'
+          import hashlib, pathlib
+          p=pathlib.Path("naro/approved-ui-v1-g10-qt-lifecycle-hotfix-162d66811274d20d.bin")
+          data=p.read_bytes()
+          assert len(data)==53988, len(data)
+          got=hashlib.sha256(data).hexdigest()
+          exp="162d66811274d20d418c2d07daa7f49023a5f731315b6e2b00869b2414e223c2"
+          assert got==exp, (got,exp)
+          print("G10 verified", len(data), got)
+          PY
+
+      - name: Promote G10 manifest
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          manifest={
+            "schema":1,
+            "channel":"naro-core",
+            "release_id":"approved-ui-v1-g10-qt-lifecycle-hotfix",
+            "generation":10,
+            "bundle_url":"https://raw.githubusercontent.com/algifri1/lucent-muse-assets/naro-updates/naro/approved-ui-v1-g10-qt-lifecycle-hotfix-162d66811274d20d.bin",
+            "bundle_sha256":"162d66811274d20d418c2d07daa7f49023a5f731315b6e2b00869b2414e223c2",
+            "bundle_size":53988,
+            "notes":"G10 Qt lifecycle hotfix: isolate QML fallback in a separate process; includes Creative UI V3 G9."
+          }
+          pathlib.Path("naro/manifest.json").write_text(
+              json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",
+              encoding="utf-8"
+          )
+          PY
+          rm -f naro/g10.part1 naro/g10.part2 naro/g10.part3 naro/g10.part4
+
+      - name: Publish verified G10
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add naro/
+          git commit -m "Publish NARO G10 Qt lifecycle hotfix [skip ci]"
+          git push origin HEAD:naro-updates
