@@ -1,0 +1,59 @@
+name: Publish NARO G15 Artifact
+
+on:
+  push:
+    branches: [naro-updates]
+    paths:
+      - '.github/workflows/publish-naro-g15.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: naro-updates
+
+      - name: Download G15 artifact
+        env:
+          ARTIFACT_URL: "https://sdmntprjapaneast.oaiusercontent.com/files/00000000-ad60-8209-b11b-81f259ad3620/raw?se=2026-09-15T05%3A10%3A40Z&sp=r&sv=2026-02-06&sr=b&scid=3b291b57-20ae-5a47-878b-d7377ed69091&skoid=54865dd2-31dc-44cc-a877-635aa4250446&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-15T04%3A57%3A08Z&ske=2026-09-16T04%3A57%3A08Z&sks=b&skv=2026-02-06&sig=ieYHFHlS0OS/zJkbHOkKyuKKTBOKT1UJTYNogqfsKBM%3D"
+        run: |
+          set -euo pipefail
+          curl -fL "$ARTIFACT_URL" -o /tmp/naro-update-bundle.zip
+          rm -rf /tmp/naro-g15
+          mkdir -p /tmp/naro-g15
+          unzip -o /tmp/naro-update-bundle.zip -d /tmp/naro-g15
+
+      - name: Verify G15 generation and checksum
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          root=pathlib.Path('/tmp/naro-g15')
+          manifest=json.loads((root/'manifest.json').read_text())
+          assert manifest['generation']==15, manifest
+          assert manifest['release_id']=='approved-ui-v1-g15-functional-parity', manifest
+          bundle=root / pathlib.Path(manifest['bundle_url']).name
+          data=bundle.read_bytes()
+          exp='44b31a5630c5ef294b29817555ab5ea832ad6efbcddac3bda16e8cb74e23a012'
+          assert len(data)==143948, len(data)
+          got=hashlib.sha256(data).hexdigest()
+          assert got==exp, (got,exp)
+          assert manifest['bundle_sha256']==exp, manifest
+          print('G15 verified', len(data), got)
+          PY
+
+      - name: Publish G15 to NARO channel
+        run: |
+          set -euo pipefail
+          mkdir -p naro
+          cp /tmp/naro-g15/*.bin naro/
+          cp /tmp/naro-g15/manifest.json naro/manifest.json
+          cp /tmp/naro-g15/bundle_info.json naro/bundle_info.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add naro/
+          git commit -m "Publish NARO G15 functional parity [skip ci]"
+          git push origin HEAD:naro-updates
